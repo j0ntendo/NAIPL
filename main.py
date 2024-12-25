@@ -19,31 +19,36 @@ HF_MODELS = {
 }
 
 def evaluate_question(question, context, choices, reference_answer):
-    gpt_answer = query_openai(question, context, choices)
-    claude_answer = query_claude(question, context, choices)
-    hf_answers = query_all_hf_models(question, context, choices)
 
-    # BLEU 
+    formatted_context = f"{context} Options: {', '.join(choices)}"
+    
+    gpt_answer = query_openai(question, formatted_context)
+    claude_answer = query_claude(question, formatted_context)
+    hf_answers = query_all_hf_models(question, formatted_context)
+
+    # bleu
     gpt_score = evaluate_bleu(gpt_answer, reference_answer)
     claude_score = evaluate_bleu(claude_answer, reference_answer)
-    hf_scores = {model: evaluate_bleu(hf_answers[model], reference_answer) for model in HF_MODELS}
+    hf_scores = {model: evaluate_bleu(answer, reference_answer) for model, answer in hf_answers.items()}
 
-    # BenchLLaMA
+    # BenchLLaMA 
     benchllama_scores = {model_key: run_benchllama(HF_MODELS[model_key]) for model_key in HF_MODELS}
 
 
     wandb.log({
         "question": question,
-        "context": context,
+        "context": formatted_context,
+        "gpt_answer": gpt_answer,
+        "claude_answer": claude_answer,
+        **{f"{model}_bleu": score for model, score in hf_scores.items()},
+        **{f"{model}_benchllama": score['score'] for model, score in benchllama_scores.items()},
         "gpt_score": gpt_score,
-        "claude_score": claude_score,
-        **{f"{model}_bleu": hf_scores[model] for model in HF_MODELS},
-        **{f"{model}_benchllama": benchllama_scores[model]['score'] for model in HF_MODELS}
+        "claude_score": claude_score
     })
 
     return {
         "question": question,
-        "context": context,
+        "context": formatted_context,
         "choices": choices,
         "gpt_answer": gpt_answer,
         "claude_answer": claude_answer,
@@ -55,7 +60,7 @@ def evaluate_question(question, context, choices, reference_answer):
     }
 
 def run_evaluation():
-    dataset = load_medqa()
+    dataset = load_medqa()  
     results = []
 
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -64,7 +69,7 @@ def run_evaluation():
             question = example['question']
             context = example['context']
             choices = example['choices']
-            reference_answer = example['answer']
+            reference_answer = example['answer'][0]  
             future = executor.submit(evaluate_question, question, context, choices, reference_answer)
             futures.append(future)
 
