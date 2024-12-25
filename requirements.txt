@@ -1,0 +1,12 @@
+openai
+anthropic
+transformers
+datasets
+benchllama
+python-dotenv
+nltk
+matplotlib
+wandb
+huggingface_hub
+accelerate
+torch
