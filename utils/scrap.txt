@@ -1,0 +1,82 @@
+
+medical_eval_metric = GEval(
+    name="Medical QA Full Evaluation",
+    criteria=(
+        "Evaluate if the model's selected answer is correct. "
+        "Assess the coherence and factual correctness of the explanation. "
+        "Check if the model includes a confidence score and justify its certainty. "
+        "Factor in user confidence where applicable."
+    ),
+    evaluation_steps=[
+        "Compare 'actual output' to 'expected output'.",
+        "Evaluate if the explanation logically supports the chosen answer.",
+        "Penalize if the model fails to provide confidence.",
+        "Incorporate user's confidence when available.",
+        "Reward high confidence when aligned with correct answers."
+    ],
+    evaluation_params=[
+        LLMTestCaseParams.INPUT,
+        LLMTestCaseParams.ACTUAL_OUTPUT,
+        LLMTestCaseParams.EXPECTED_OUTPUT
+    ],
+    threshold=0.75,  # 75% passing threshold
+    model="gpt-4o",  # Use GPT-4o to evaluate the answers
+    strict_mode=False,  # Allow partial scores for incomplete but reasonable answers
+    verbose_mode=True  # Enable verbose output to debug explanations
+)
+
+
+# def create_prompt(question, context, choices):
+#     choices_text = '\n'.join([f"({chr(65+i)}) {choice}" for i, choice in enumerate(choices.split(', '))])
+#     prompt_instruction = "\nChoose the best option from the above choices and explain why it is the most appropriate next step in management:"
+#     return f"{context}\nQuestion: {question}\nOptions:\n{choices_text}{prompt_instruction}"
+
+
+
+
+
+def run_evaluation():
+    dataset = load_medqa(10)  
+    results = []
+
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = []
+
+        for example in dataset:
+            prompt = create_prompt(question=example['question'], context=example['context'], choices=example['choices'])
+            reference_answer = example['answer'][0]
+
+            
+            futures.append(executor.submit(geval, openai_model, prompt, reference_answer))
+            futures.append(executor.submit(geval, claude_model, prompt, reference_answer))
+            #futures.append(executor.submit(evaluate_model, llama_8b_model.query, prompt, reference_answer))
+            #futures.append(executor.submit(evaluate_model, llama_70b_model.query, prompt, reference_answer))
+            #futures.append(executor.submit(evaluate_model, llama_model, prompt, reference_answer))
+            #futures.append(executor.submit(evaluate_model, openbio_llm_model.query, prompt, reference_answer))
+
+        
+        for future in as_completed(futures):
+            response = future.result()
+            wandb.log({"response": response, "score": score})
+            results.append({"response": response, "score": score})
+
+    wandb.finish()  
+    print("Eval completed.")
+    return results
+
+
+
+explainability_metric = GEval(
+    name="Explainability and Correctness",
+    criteria="Evaluate if the model provides a clear and logical explanation to support its answer. "
+             "Check if the explanation directly addresses the question and is factually correct.",
+    evaluation_steps=[
+        "Review the model's explanation for alignment with the chosen answer.",
+        "Check for factual correctness and logical reasoning.",
+        "Assess the model’s confidence level and coherence."
+    ],
+    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+    model="gpt-4o",
+    verbose_mode=True,
+    threshold=0.75,  # 75% passing threshold
+)

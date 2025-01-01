@@ -10,3 +10,5 @@ wandb
 huggingface_hub
 accelerate
 torch
+ollama
+deepeval

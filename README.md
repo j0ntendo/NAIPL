@@ -1,5 +1,5 @@
 
-### 1. Install Dependencies
+### 1. Install Dependencies on a venv
 ```bash
 pip install -r requirements.txt
 ```
