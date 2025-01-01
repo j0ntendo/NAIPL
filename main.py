@@ -15,7 +15,7 @@ from models.claude import query_claude
 #from models.openbio_llm import OpenBioLLM
 #from models.llama3 import  query_llama
 #from models.llama_70b import Llama70B
-#from models.llama_8b import Llama8B
+from models.llama_8b import Llama8B
 from datasets import load_dataset
 import re
 import json
@@ -24,7 +24,7 @@ import io
 
 openai_model = query_openai  
 claude_model = query_claude  
-#llama_8b_model = Llama8B()  
+llama_8b_model = Llama8B()  
 #llama_70b_model = Llama70B()  
 #openbio_llm_model = OpenBioLLM()
 #llama3 = query_llama
@@ -38,7 +38,7 @@ else:
     print("Hugging Face token not found. Please check your .env file.")
 
 
-def load_medqa(sample_size=10):
+def load_medqa(sample_size=5):
     dataset = load_dataset("bigbio/med_qa", "med_qa_en_bigbio_qa")['train']
     sample_size = min(sample_size, len(dataset))
     sampled_dataset = dataset.shuffle(seed=42).select(range(sample_size))
@@ -104,7 +104,7 @@ def extract_model_confidence(output_text):
 
 def geval(model_query_function, prompt, reference_answer, index, model_name):
     try:
-        if model_name == "GPT-4o":
+        if model_name == "GPT-4o" or model_name == "LLaMA-8B":
             model_answer, logprob_conf = model_query_function(prompt)
         else:
             model_answer = model_query_function(prompt)
@@ -160,7 +160,7 @@ def geval(model_query_function, prompt, reference_answer, index, model_name):
         }
 
 def run_evaluation():
-    dataset = load_medqa(10) 
+    dataset = load_medqa(5) 
     results = []
 
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -172,6 +172,7 @@ def run_evaluation():
 
             futures.append(executor.submit(geval, query_openai, prompt, reference_answer, index, "GPT-4o"))
             futures.append(executor.submit(geval, query_claude, prompt, reference_answer, index, "Claude-3"))
+            futures.append(executor.submit(geval, llama_8b_model.query, prompt, reference_answer, index, "LLaMA-8B"))
 
         for future in as_completed(futures):
             result = future.result()
@@ -179,7 +180,7 @@ def run_evaluation():
 
     results.sort(key=lambda x: (x['index'], x['model_name']))
 
-    json_file = "evaluation_results.json"
+    json_file = "evaluation_results_allthree.json"
     with open(json_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=4, ensure_ascii=False)
 
