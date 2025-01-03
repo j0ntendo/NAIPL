@@ -30,13 +30,6 @@ llama_8b_model = Llama8B()
 #llama3 = query_llama
 
 wandb.init(project="NAIPL-FRAMEWORK", name="MedQA-Full-Pipeline")
-token = os.getenv("HUGGINGFACE_TOKEN")
-if token:
-    login(token=token)
-    print("Successfully logged into Hugging Face!")
-else:
-    print("Hugging Face token not found. Please check your .env file.")
-
 
 def load_medqa(sample_size=5):
     dataset = load_dataset("bigbio/med_qa", "med_qa_en_bigbio_qa")['train']
@@ -54,21 +47,15 @@ def load_medqa(sample_size=5):
 
     return processed_data
 
-
-
-
-
-
 def create_prompt(question, context, choices):
     user_confidence_query = (
-        "Before answering, rate how confident you are in understanding and asking this medical question on a scale from 1 to 10 (UConf.). "
-        "After providing your answer to the multiple choice medical question, rate how confident you are in the answer you gave (MConf.)."
-        "Output the answer: and confidence scores in the end like UConf: MConf: "
+        "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). "
+        "Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). "
+        "After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). "
+        "Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. "
     )
     choices_text = '\n'.join([f"({chr(65+i)}) {choice}" for i, choice in enumerate(choices)])
     return f"{user_confidence_query}\n\nContext: {context}\n\nQuestion: {question}\n\nOptions:\n{choices_text}\n"
-
-
 
 explainability_metric = GEval(
     name="Correctness",
@@ -79,68 +66,77 @@ explainability_metric = GEval(
     #threshold=0.75
 )
 
-# confidence_metric = GEval(
-#     name="Confidence",
-#     criteria="Rate how confident the model is in its final answer.",
-#     evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
-#     model="gpt-4o",
-#     verbose_mode=True,
-#     threshold=0.75
-# )
-
-
-
-def extract_user_confidence(input_text):
+def extract_user_confidence(input):
     match = re.search(r"UConf:\s*(\d+)", input_text)
     if match:
         return int(match.group(1))
     return None
 
-def extract_model_confidence(output_text):
+def extract_model_confidence(output):
     match = re.search(r"MConf:\s*(\d+)", output_text)
     if match:
         return int(match.group(1))
     return None
 
+def extract_answer(output_text):
+    match = re.search(r'Answer:\s*\(?([A-E])\)?', output_text, re.IGNORECASE)
+    if match:
+        return match.group(1).strip().upper()
+    return None
+
+def is_correct(model_output, reference_answer):
+    extracted_answer = extract_answer(model_output)
+    return extracted_answer == reference_answer
+
 def geval(model_query_function, prompt, reference_answer, index, model_name):
     try:
-        if model_name == "GPT-4o" or model_name == "LLaMA-8B":
+        
+        if model_name == "GPT-4o":
             model_answer, logprob_conf = model_query_function(prompt)
         else:
             model_answer = model_query_function(prompt)
-            logprob_conf = None  # Not available for Claude or LLaMA
+            logprob_conf = None  
 
         user_confidence = extract_user_confidence(model_answer)
         model_confidence = extract_model_confidence(model_answer)
+        predicted_answer = extract_answer(model_answer)
+        is_correct, extracted_answer = (predicted_answer == reference_answer, predicted_answer)
 
         test_case = LLMTestCase(
             input=prompt,
             actual_output=model_answer,
             expected_output=reference_answer
         )
-
         explainability_metric.measure(test_case)
 
+        
         wandb.log({
             "index": index,
             "model_name": model_name,
             "prompt": prompt,
             "user_confidence": user_confidence,
             "model_answer": model_answer,
+            "predicted_answer": extracted_answer,
+            "correct_answer": reference_answer,
+            "is_correct": is_correct,
             "model_confidence": model_confidence,
-            "logprob_confidence": logprob_conf,
+            "logprob_perplexity": logprob_conf,
             "explainability_score": explainability_metric.score,
             "explanation": explainability_metric.reason
         })
 
+        
         return {
             "index": index,
             "model_name": model_name,
             "prompt": prompt,
             "user_confidence": user_confidence,
             "model_answer": model_answer,
+            "predicted_answer": extracted_answer,
+            "correct_answer": reference_answer,
+            "is_correct": is_correct,
             "model_confidence": model_confidence,
-            "logprob_confidence": logprob_conf,
+            "logprob_perplexity": logprob_conf,
             "explainability_score": explainability_metric.score,
             "explanation": explainability_metric.reason
         }
@@ -153,6 +149,9 @@ def geval(model_query_function, prompt, reference_answer, index, model_name):
             "prompt": prompt,
             "user_confidence": None,
             "model_answer": None,
+            "predicted_answer": None,
+            "correct_answer": reference_answer,
+            "is_correct": False,
             "model_confidence": None,
             "logprob_confidence": None,
             "explainability_score": 0,
@@ -160,7 +159,7 @@ def geval(model_query_function, prompt, reference_answer, index, model_name):
         }
 
 def run_evaluation():
-    dataset = load_medqa(5) 
+    dataset = load_medqa(2) 
     results = []
 
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -180,7 +179,7 @@ def run_evaluation():
 
     results.sort(key=lambda x: (x['index'], x['model_name']))
 
-    json_file = "evaluation_results_allthree.json"
+    json_file = "testgpt.json"
     with open(json_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=4, ensure_ascii=False)
 

@@ -2,6 +2,7 @@
 ### 1. Install Dependencies on a venv
 ```bash
 pip install -r requirements.txt
+run python login.py to set the enviroment with the api keys
 ```
 
 ### 2. Set Up Environment Variables
