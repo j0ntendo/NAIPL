@@ -80,3 +80,71 @@ explainability_metric = GEval(
     verbose_mode=True,
     threshold=0.75,  # 75% passing threshold
 )
+
+
+
+
+jan 8, 2025
+
+llama_evaluator = LlamaEvaluator(model_name="meta-llama/Llama-3.1-8B-Instruct")
+
+
+def start_evaluating(model_call, prompt, correct_answer, options, idx, model_name):
+    try:
+        
+        if model_name == "GPT-4o":
+            model_response, logprob = model_call(prompt)
+        else:
+            model_response = model_call(prompt)
+            logprob = None
+
+        
+        is_correct = evaluate_answer(model_response)
+
+        #geval
+        # test_case = LLMTestCase(
+        #     input=prompt,
+        #     actual_output=model_response,
+        #     expected_output=correct_answer
+        # )
+        # evaluation_metric.measure(test_case)
+
+        
+        wandb.log({
+            "index": idx,
+            "model_name": model_name,
+            "prompt": prompt,
+            "response": model_response,
+            "real_answer": correct_answer,
+            "is_correct": is_correct,
+            "logprob_score": logprob,
+            # "explainability_score": evaluation_metric.score,
+            # "explanation": evaluation_metric.reason
+        })
+
+        
+        return {
+            "index": idx,
+            "model_name": model_name,
+            "prompt": prompt,
+            "response": model_response,
+            "real_answer": correct_answer,
+            "is_correct": is_correct,
+            "logprob_score": logprob,
+            # "explainability_score": evaluation_metric.score,
+            # "explanation": evaluation_metric.reason
+        }
+
+    except Exception as error:
+        print(f"Error during evaluation: {str(error)}")
+        return {
+            "index": idx,
+            "model_name": model_name,
+            "prompt": prompt,
+            "response": None,
+            "real_answer": correct_answer,
+            "is_correct": False,
+            "logprob_score": None,
+            # "explainability_score": 0,
+            "error": str(error)
+        }

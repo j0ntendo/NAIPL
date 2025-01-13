@@ -1,5 +1,4 @@
 import os
-import math
 import numpy as np
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -36,21 +35,20 @@ def get_completion(
     completion = client.chat.completions.create(**params)
     return completion
 
+
 def query_openai(prompt):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model_used = "gpt-4o"  
-    
+    model_used = "gpt-4o"
+
     try:
         response = get_completion(
-            [{"role": "user", "content": prompt}],
-            model=model_used,
-            logprobs=True
+            [{"role": "user", "content": prompt}], model=model_used, logprobs=True
         )
-        
+
         if response and response.choices:
             choice = response.choices[0]
             logprobs = [token.logprob for token in choice.logprobs.content]
-            perplexity_score = np.exp(-np.mean(logprobs))  
+            perplexity_score = np.exp(-np.mean(logprobs))
             logprob_conf = perplexity_score
 
             return choice.message.content, logprob_conf

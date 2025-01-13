@@ -1,0 +1,58 @@
+[
+    {
+        "index": 0,
+        "model_name": "Claude-3",
+        "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: A 35-year-old woman comes to your office with a variety of complaints. As part of her evaluation, she undergoes laboratory testing which reveals the presence of anti-centromere antibodies. All of the following symptoms and signs would be expected to be present EXCEPT:\n\nOptions:\n(A) Pallor, cyanosis, and erythema of the hands\n(B) Calcium deposits on digits\n(C) Blanching vascular abnormalities\n(D) Hypercoagulable state\n(E) Heartburn and regurgitation\n",
+        "user_confidence": 8,
+        "model_answer": "UConf: 8\n\nAnswer: (E) Heartburn and regurgitation\n\nExplanation:\nThe presence of anti-centromere antibodies is characteristic of the autoimmune disease Systemic Sclerosis (SSc), also known as Scleroderma. The following symptoms and signs are commonly associated with SSc:\n\n(A) Pallor, cyanosis, and erythema of the hands - These are typical manifestations of Raynaud's phenomenon, which is commonly seen in SSc.\n(B) Calcium deposits on digits - Calcinosis is a common complication of SSc, where calcium deposits can develop in the skin and soft tissues.\n(C) Blanching vascular abnormalities - Vascular changes, including Raynaud's phenomenon, are a hallmark of SSc.\n(D) Hypercoagulable state - Patients with SSc are at an increased risk of developing thrombotic events due to the underlying vascular and inflammatory changes.\n\nThe exception is (E) Heartburn and regurgitation, which are more commonly associated with Gastroesophageal Reflux Disease (GERD) rather than being a direct manifestation of SSc. While GERD can be a complication of SSc due to esophageal involvement, it is not necessarily a universal symptom.\n\nMConf: 9\n\nUConf: 8\nMConf: 9",
+        "predicted_answer": "E",
+        "correct_answer": "Hypercoagulable state",
+        "is_correct": false,
+        "model_confidence": 9,
+        "logprob_perplexity": null,
+        "explainability_score": 0.8795074627398553,
+        "explanation": "The actual output correctly identifies the presence of anti-centromere antibodies as related to Systemic Sclerosis (SSc) and accurately excludes GERD as a common symptom, aligning with the expected output. It logically explains each symptom, ensuring comprehensive coverage of necessary facts."
+    },
+    {
+        "index": 0,
+        "model_name": "GPT-4o",
+        "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: A 35-year-old woman comes to your office with a variety of complaints. As part of her evaluation, she undergoes laboratory testing which reveals the presence of anti-centromere antibodies. All of the following symptoms and signs would be expected to be present EXCEPT:\n\nOptions:\n(A) Pallor, cyanosis, and erythema of the hands\n(B) Calcium deposits on digits\n(C) Blanching vascular abnormalities\n(D) Hypercoagulable state\n(E) Heartburn and regurgitation\n",
+        "user_confidence": 9,
+        "model_answer": "Answer: (D) Hypercoagulable state\n\nThe presence of anti-centromere antibodies is commonly associated with limited scleroderma, also known as CREST syndrome. CREST stands for Calcinosis, Raynaud's phenomenon, Esophageal dysmotility, Sclerodactyly, and Telangiectasia. \n\n- (A) Pallor, cyanosis, and erythema of the hands are indicative of Raynaud's phenomenon, which is part of CREST syndrome.\n- (B) Calcium deposits on digits refer to Calcinosis, another component of CREST syndrome.\n- (C) Blanching vascular abnormalities can be related to Telangiectasia, which is also part of CREST syndrome.\n- (E) Heartburn and regurgitation are symptoms of Esophageal dysmotility, another feature of CREST syndrome.\n\nA hypercoagulable state (D) is not typically associated with CREST syndrome. Therefore, this is the correct answer as it is the exception.\n\nMConf: 9\n\nUConf: 9\nMConf: 9",
+        "predicted_answer": "D",
+        "correct_answer": "Hypercoagulable state",
+        "is_correct": false,
+        "model_confidence": 9,
+        "logprob_perplexity": 1.173970417749317,
+        "explainability_score": 1.0,
+        "explanation": "The actual output correctly identifies (D) Hypercoagulable state as the exception, aligning with the expected understanding of CREST syndrome. It accurately explains the presence of anti-centromere antibodies and associates each symptom with the components of CREST syndrome. The confidence ratings are also appropriately included."
+    },
+    {
+        "index": 1,
+        "model_name": "Claude-3",
+        "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: An 8-year-old boy is brought to the pediatrician because his mother is concerned about recent behavioral changes. His mother states that she has started to notice that he is slurring his speech and seems to be falling more than normal. On exam, the pediatrician observes the boy has pes cavus, hammer toes, and kyposcoliosis. Based on these findings, the pediatrician is concerned the child has a trinucleotide repeat disease. Which of the following trinucleotide repeats is this child most likely to possess?\n\nOptions:\n(A) CGG\n(B) GAA\n(C) CAG\n(D) CTG\n(E) GCC\n",
+        "user_confidence": 8,
+        "model_answer": "UConf: 8\n\nAnswer: (B) GAA\n\nExplanation: The clinical features described, including slurred speech, increased falls, and the physical exam findings of pes cavus, hammer toes, and kyphoscoliosis, are suggestive of a trinucleotide repeat disease called Friedreich's ataxia. Friedreich's ataxia is caused by an expansion of GAA trinucleotide repeats in the FXN gene, which results in reduced production of the frataxin protein and leads to the clinical manifestations observed in this patient.\n\nMConf: 9\n\nUConf: 8\nMConf: 9",
+        "predicted_answer": "B",
+        "correct_answer": "GAA",
+        "is_correct": false,
+        "model_confidence": 9,
+        "logprob_perplexity": null,
+        "explainability_score": 1.0,
+        "explanation": "The actual output provides a correct answer of (B) GAA, matching the expected findings in Friedreich's ataxia, which is consistent with the symptoms and physical exam findings. The explanation correctly identifies the trinucleotide repeat disease and its associated repeat sequence. Both confidence ratings are also provided, aligning with the input requirements."
+    },
+    {
+        "index": 1,
+        "model_name": "GPT-4o",
+        "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: An 8-year-old boy is brought to the pediatrician because his mother is concerned about recent behavioral changes. His mother states that she has started to notice that he is slurring his speech and seems to be falling more than normal. On exam, the pediatrician observes the boy has pes cavus, hammer toes, and kyposcoliosis. Based on these findings, the pediatrician is concerned the child has a trinucleotide repeat disease. Which of the following trinucleotide repeats is this child most likely to possess?\n\nOptions:\n(A) CGG\n(B) GAA\n(C) CAG\n(D) CTG\n(E) GCC\n",
+        "user_confidence": 9,
+        "model_answer": "Answer: (B) GAA\n\nThe symptoms and findings described in the question are suggestive of Friedreich's ataxia, which is a genetic disorder characterized by progressive damage to the nervous system. The key features mentioned include slurred speech, frequent falls, pes cavus (high-arched feet), hammer toes, and kyphoscoliosis. Friedreich's ataxia is associated with a trinucleotide repeat expansion of GAA in the FXN gene.\n\nUConf: 9\nMConf: 9",
+        "predicted_answer": "B",
+        "correct_answer": "GAA",
+        "is_correct": false,
+        "model_confidence": 9,
+        "logprob_perplexity": 1.2172864180709675,
+        "explainability_score": 1.0,
+        "explanation": "The actual output correctly identifies the symptoms of Friedreich's ataxia and associates them with the GAA trinucleotide repeat, matching the expected output and following the evaluation steps comprehensively."
+    }
+]

@@ -12,3 +12,13 @@ accelerate
 torch
 ollama
 deepeval
+simplejson
+flask
+flask_cors
+elasticsearch_dsl
+gensim
+numpy
+nltk
+nvidia-ml-py3
+tqdm
+langchain-community

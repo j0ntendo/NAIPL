@@ -3,29 +3,29 @@
         "index": 0,
         "model_name": "Claude-3",
         "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: A 35-year-old woman comes to your office with a variety of complaints. As part of her evaluation, she undergoes laboratory testing which reveals the presence of anti-centromere antibodies. All of the following symptoms and signs would be expected to be present EXCEPT:\n\nOptions:\n(A) Pallor, cyanosis, and erythema of the hands\n(B) Calcium deposits on digits\n(C) Blanching vascular abnormalities\n(D) Hypercoagulable state\n(E) Heartburn and regurgitation\n",
-        "user_confidence": null,
-        "model_answer": null,
-        "predicted_answer": null,
+        "user_confidence": 8,
+        "model_answer": "UConf: 8\n\nAnswer: E. Heartburn and regurgitation\n\nExplanation:\nThe presence of anti-centromere antibodies is typically associated with the autoimmune condition known as scleroderma or systemic sclerosis. The main symptoms and signs expected in this condition are:\n(A) Pallor, cyanosis, and erythema of the hands (Raynaud's phenomenon)\n(B) Calcium deposits on digits (calcinosis)\n(C) Blanching vascular abnormalities (Raynaud's phenomenon)\n(D) Hypercoagulable state\n\nHowever, heartburn and regurgitation, which are commonly associated with gastroesophageal reflux disease (GERD), are not a typical symptom of scleroderma. Instead, esophageal dysmotility and decreased lower esophageal sphincter pressure are more common in scleroderma, leading to dysphagia and esophageal strictures, but not necessarily heartburn and regurgitation.\n\nTherefore, the correct answer is (E) Heartburn and regurgitation, as this is the symptom that would not be expected to be present in a patient with scleroderma and anti-centromere antibodies.\n\nMConf: 9\nUConf: 8\nMConf: 9",
+        "predicted_answer": "E",
         "correct_answer": "Hypercoagulable state",
         "is_correct": false,
-        "model_confidence": null,
-        "logprob_confidence": null,
-        "explainability_score": 0,
-        "error": "name 'input_text' is not defined"
+        "model_confidence": 9,
+        "logprob_perplexity": null,
+        "explainability_score": 0.7234475574098118,
+        "explanation": "The actual output correctly identifies the association of anti-centromere antibodies with scleroderma and the expected symptoms. However, it inaccurately claims that heartburn and regurgitation are not typical in scleroderma, when in fact they can be due to esophageal involvement. The reasoning contains factual inaccuracies regarding symptom expectations, affecting the factual correctness."
     },
     {
         "index": 0,
         "model_name": "GPT-4o",
         "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: A 35-year-old woman comes to your office with a variety of complaints. As part of her evaluation, she undergoes laboratory testing which reveals the presence of anti-centromere antibodies. All of the following symptoms and signs would be expected to be present EXCEPT:\n\nOptions:\n(A) Pallor, cyanosis, and erythema of the hands\n(B) Calcium deposits on digits\n(C) Blanching vascular abnormalities\n(D) Hypercoagulable state\n(E) Heartburn and regurgitation\n",
-        "user_confidence": null,
-        "model_answer": null,
-        "predicted_answer": null,
+        "user_confidence": 9,
+        "model_answer": "Answer: (D) Hypercoagulable state\n\nAnti-centromere antibodies are typically associated with limited scleroderma, also known as CREST syndrome. CREST stands for Calcinosis, Raynaud's phenomenon, Esophageal dysmotility, Sclerodactyly, and Telangiectasia. \n\n- (A) Pallor, cyanosis, and erythema of the hands are indicative of Raynaud's phenomenon, which is common in CREST syndrome.\n- (B) Calcium deposits on digits refer to Calcinosis, another component of CREST syndrome.\n- (C) Blanching vascular abnormalities can refer to Telangiectasia, which is also part of CREST syndrome.\n- (E) Heartburn and regurgitation are symptoms of Esophageal dysmotility, another feature of CREST syndrome.\n\nA hypercoagulable state (D) is not typically associated with CREST syndrome. Therefore, this is the correct answer as it is the exception.\n\nUConf: 9\nMConf: 9",
+        "predicted_answer": "D",
         "correct_answer": "Hypercoagulable state",
         "is_correct": false,
-        "model_confidence": null,
-        "logprob_confidence": null,
-        "explainability_score": 0,
-        "error": "name 'input_text' is not defined"
+        "model_confidence": 9,
+        "logprob_perplexity": 1.1711509299811387,
+        "explainability_score": 1.0,
+        "explanation": "The actual output correctly identifies (D) Hypercoagulable state as the symptom not associated with CREST syndrome, matching the expected output and showing factual consistency by accurately explaining why each of the other options is associated with CREST syndrome."
     },
     {
         "index": 0,
@@ -39,35 +39,35 @@
         "model_confidence": null,
         "logprob_confidence": null,
         "explainability_score": 0,
-        "error": "name 'input_text' is not defined"
+        "error": "expected string or bytes-like object"
     },
     {
         "index": 1,
         "model_name": "Claude-3",
         "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: An 8-year-old boy is brought to the pediatrician because his mother is concerned about recent behavioral changes. His mother states that she has started to notice that he is slurring his speech and seems to be falling more than normal. On exam, the pediatrician observes the boy has pes cavus, hammer toes, and kyposcoliosis. Based on these findings, the pediatrician is concerned the child has a trinucleotide repeat disease. Which of the following trinucleotide repeats is this child most likely to possess?\n\nOptions:\n(A) CGG\n(B) GAA\n(C) CAG\n(D) CTG\n(E) GCC\n",
-        "user_confidence": null,
-        "model_answer": null,
-        "predicted_answer": null,
+        "user_confidence": 8,
+        "model_answer": "UConf: 8\n\nAnswer: (B) GAA\n\nExplanation: The clinical findings described, including slurred speech, pes cavus, hammer toes, and kyphoscoliosis, are suggestive of Friedreich's ataxia, which is caused by an expansion of the GAA trinucleotide repeat in the FXN gene. Friedreich's ataxia is an autosomal recessive trinucleotide repeat disorder that typically presents in childhood with progressive neurological symptoms.\n\nMConf: 9\n\nUConf: 8\nMConf: 9",
+        "predicted_answer": "B",
         "correct_answer": "GAA",
         "is_correct": false,
-        "model_confidence": null,
-        "logprob_confidence": null,
-        "explainability_score": 0,
-        "error": "name 'input_text' is not defined"
+        "model_confidence": 9,
+        "logprob_perplexity": null,
+        "explainability_score": 1.0000000000000002,
+        "explanation": "The actual output matches the expected output. It identifies the trinucleotide repeat disease as Friedreich's ataxia caused by GAA repeats, aligning with the symptoms outlined in the question. The confidence ratings are appropriately provided as per the input instructions."
     },
     {
         "index": 1,
         "model_name": "GPT-4o",
         "prompt": "Before answering, rate your confidence in understanding and interpreting this medical question on a scale from 1 to 10 (UConf.). Immediately provide the correct answer in the format: Answer: (A/B/C/D/E). After giving the answer, explain your reasoning and rate how confident you are in your answer (MConf.). Ensure to conclude your response with: UConf: [1-10] and MConf: [1-10]. \n\nContext: \n\nQuestion: An 8-year-old boy is brought to the pediatrician because his mother is concerned about recent behavioral changes. His mother states that she has started to notice that he is slurring his speech and seems to be falling more than normal. On exam, the pediatrician observes the boy has pes cavus, hammer toes, and kyposcoliosis. Based on these findings, the pediatrician is concerned the child has a trinucleotide repeat disease. Which of the following trinucleotide repeats is this child most likely to possess?\n\nOptions:\n(A) CGG\n(B) GAA\n(C) CAG\n(D) CTG\n(E) GCC\n",
-        "user_confidence": null,
-        "model_answer": null,
-        "predicted_answer": null,
+        "user_confidence": 9,
+        "model_answer": "Answer: (B) GAA\n\nThe symptoms and findings described in the question are suggestive of Friedreich's ataxia, which is a genetic disorder characterized by progressive damage to the nervous system. The key features mentioned include slurred speech, frequent falls, pes cavus (high-arched feet), hammer toes, and kyphoscoliosis. Friedreich's ataxia is associated with a trinucleotide repeat expansion of GAA in the FXN gene.\n\nUConf: 9\nMConf: 9",
+        "predicted_answer": "B",
         "correct_answer": "GAA",
         "is_correct": false,
-        "model_confidence": null,
-        "logprob_confidence": null,
-        "explainability_score": 0,
-        "error": "name 'input_text' is not defined"
+        "model_confidence": 9,
+        "logprob_perplexity": 1.2224738347321016,
+        "explainability_score": 1.0,
+        "explanation": "The actual output correctly identifies the child's condition as Friedreich's ataxia based on the symptoms described, such as slurred speech, frequent falls, pes cavus, hammer toes, and kyphoscoliosis. It accurately associates this condition with the trinucleotide repeat GAA, matching the expected output. The completeness and contextual meaning are maintained, with high confidence ratings provided."
     },
     {
         "index": 1,
@@ -81,6 +81,6 @@
         "model_confidence": null,
         "logprob_confidence": null,
         "explainability_score": 0,
-        "error": "name 'input_text' is not defined"
+        "error": "expected string or bytes-like object"
     }
 ]

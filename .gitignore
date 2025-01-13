@@ -2,3 +2,8 @@
 jon/
 huggingface_cache/
 wandb/
+data_clean/
+_MACOSX/
+4_options/
+.ruff_cache/
+.ollama/
